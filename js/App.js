@@ -10,7 +10,7 @@ function App() {
     } else {
         this.renderer = new THREE.CanvasRenderer();
     }
-    this.scene.setGravity(new THREE.Vector3( 0, -30, 0 ));
+    this.scene.setGravity(new THREE.Vector3( 0, -9, 0 ));
 
     //set attributes for the renderer object
     this.renderer.setSize(window.innerWidth, window.innerHeight); //full screen
@@ -84,6 +84,7 @@ App.prototype.update = function(){
             //ball.update();
             //console.log(ballObject.position);
 
+            app.camera.lookAt(ballObject.position);
             break;
     }
 }

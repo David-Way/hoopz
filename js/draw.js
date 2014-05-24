@@ -4,6 +4,68 @@
 function drawScene() {
     drawWalls();
     drawFloorAndRoof();
+    drawTable();
+}
+
+function drawTable() {
+
+    var table = new THREE.Object3D();
+
+    var tableMaterial = Physijs.createMaterial(new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture('images/table.jpg') }),
+        FRICTION / 2, // high friction
+        RESTITUTION // low restitution
+    );
+
+    var tableTopGeometry = new THREE.BoxGeometry(5, 3,.25);
+    var tableLegGeometry = new THREE.BoxGeometry(.25, 4,.25);
+
+    var tableTop = new Physijs.BoxMesh( tableTopGeometry, tableMaterial );
+    var tableLegOne = new Physijs.BoxMesh( tableLegGeometry, tableMaterial );
+    var tableLegTwo = new Physijs.BoxMesh( tableLegGeometry, tableMaterial );
+    var tableLegThree = new Physijs.BoxMesh( tableLegGeometry, tableMaterial );
+    var tableLegFour = new Physijs.BoxMesh( tableLegGeometry, tableMaterial );
+
+    tableTop.position.y = -1;
+    tableTop.rotation.x = toRad(90);
+    tableTop.castShadow = true;
+    tableTop.receiveShadow = true;
+
+    tableLegOne.position.y = -3;
+    tableLegOne.position.x = 2.25;
+    tableLegOne.position.z = 1.25;
+
+    tableLegTwo.position.y = -3;
+    tableLegTwo.position.x = 2.25;
+    tableLegTwo.position.z = -1.25;
+
+    tableLegThree.position.y = -3;
+    tableLegThree.position.x = -2.25;
+    tableLegThree.position.z = 1.25;
+
+    tableLegFour.position.y = -3;
+    tableLegFour.position.x = -2.25;
+    tableLegFour.position.z = -1.25;
+
+    tableLegOne.castShadow = true;
+    tableLegOne.receiveShadow = true;
+    tableLegTwo.castShadow = true;
+    tableLegTwo.receiveShadow = true;
+    tableLegThree.castShadow = true;
+    tableLegThree.receiveShadow = true;
+    tableLegFour.castShadow = true;
+    tableLegFour.receiveShadow = true;
+
+
+    table.add(tableTop);
+    table.add(tableLegOne);
+    table.add(tableLegTwo);
+    table.add(tableLegThree);
+    table.add(tableLegFour);
+
+    table.rotation.y = toRad(5);
+    table.position.y = 0;
+
+    app.scene.add(table);
 }
 
 function drawFloorAndRoof () {
@@ -11,12 +73,12 @@ function drawFloorAndRoof () {
     var roofGeometry = new THREE.BoxGeometry(21, 21, 1);
 
     var floorMaterial = Physijs.createMaterial(new THREE.MeshLambertMaterial({color: 0xffffff}),
-        .95, // high friction
-        .95 // low restitution
+        FRICTION, // high friction
+        RESTITUTION // low restitution
     );
     var roofMaterial = Physijs.createMaterial(new THREE.MeshLambertMaterial({color: 0xffffff}),
-        .95, // high friction
-        .95 // low restitution
+        FRICTION, // high friction
+        RESTITUTION // low restitution
     );
 
     var floor = new Physijs.BoxMesh( floorGeometry, floorMaterial );
@@ -46,27 +108,35 @@ function drawFloorAndRoof () {
 }
 
 function drawWalls() {
-    var wallGeometryNorth = new THREE.BoxGeometry(20, 10, 1);
+    var wallGeometryNorth = new THREE.BoxGeometry(20, 10, 1, 4, 4, 4);
     var wallGeometrySouth = new THREE.BoxGeometry(20, 10, 1);
     var wallGeometryEast = new THREE.BoxGeometry(20, 10, 1);
     var wallGeometryWest = new THREE.BoxGeometry(20, 10, 1);
 
-    var wallMaterialNorth = Physijs.createMaterial(new THREE.MeshLambertMaterial( {color: 0xff0000} ),
-        .95, // high friction
-        .95 // low restitution
+    var whiteWallTexture = THREE.ImageUtils.loadTexture('images/wall_white.jpg');
+    whiteWallTexture.wrapS = whiteWallTexture.wrapT = THREE.RepeatWrapping;
+    whiteWallTexture.repeat.x=2;
+    whiteWallTexture.repeat.y=2;
+
+
+    var wallMaterialNorth = Physijs.createMaterial(new THREE.MeshLambertMaterial( { map: whiteWallTexture } ),
+        FRICTION, // high friction
+        RESTITUTION // low restitution
     );
-    var wallMaterialSouth = Physijs.createMaterial(new THREE.MeshLambertMaterial( {color: 0x00ff00}),
-        .95, // high friction
-        .95 // low restitution
+    var wallMaterialSouth = Physijs.createMaterial(new THREE.MeshLambertMaterial( { map: whiteWallTexture }),
+        FRICTION, // high friction
+        RESTITUTION // low restitution
     );
-    var wallMaterialEast = Physijs.createMaterial(new THREE.MeshLambertMaterial( {color: 0x0000ff}),
-        .95, // high friction
-        .95 // low restitution
+    var wallMaterialEast = Physijs.createMaterial(new THREE.MeshLambertMaterial( { map: whiteWallTexture }),
+        FRICTION, // high friction
+        RESTITUTION // low restitution
     );
-    var wallMaterialWest = Physijs.createMaterial(new THREE.MeshLambertMaterial( {color: 0xffff00}),
-        .95, // high friction
-        .95 // low restitution
+    var wallMaterialWest = Physijs.createMaterial(new THREE.MeshLambertMaterial( { map: whiteWallTexture }),
+        FRICTION, // high friction
+        RESTITUTION // low restitution
     );
+
+
 
     var wallNorth = new Physijs.BoxMesh( wallGeometryNorth, wallMaterialNorth );
     var wallSouth = new Physijs.BoxMesh( wallGeometrySouth, wallMaterialSouth );

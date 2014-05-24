@@ -10,8 +10,10 @@ function Projectile(_x, _y, _z, _radius, _gravity, _speed) {
     this.speed = _speed;
 
     var ballGeometry = new THREE.SphereGeometry(this.radius);
-    var ballMaterial = new THREE.MeshLambertMaterial( {color: 0xffffff} );
-
+    var ballMaterial = Physijs.createMaterial(new THREE.MeshLambertMaterial( {color: 0xffffff} ),
+        FRICTION,
+        RESTITUTION
+    );
 
     if (ballObject != null) {
         ballObject.removeEventListener('collision');
@@ -102,7 +104,9 @@ function Projectile(_x, _y, _z, _radius, _gravity, _speed) {
     this.ySpeed = this.speed * Math.cos(this.xyAngle  * 180/Math.PI);
     this.zSpeed = this.speed * Math.sin(this.zxAngle * 180/Math.PI);
 
-    ballObject.applyImpulse(new THREE.Vector3(this.xSpeed, this.ySpeed, this.zSpeed), new THREE.Vector3(0, 0, 0));
+    var force = new THREE.Vector3(end.x - start.x, end.y - start.y, end.z - start.z);
+
+    ballObject.applyImpulse(force, new THREE.Vector3(start.x, start.y, start.z));
 
     currentState = LAUNCHING;
     time = 0; //reset time

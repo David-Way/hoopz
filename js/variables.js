@@ -19,6 +19,9 @@ var WALL_SOUTH = 3
 var WALL_EAST = 4;
 var WALL_WEST = 5;
 
+var FRICTION = 0.95;
+var RESTITUTION = 0.95;
+
 //gamestates
 var LOADING = -1;
 var PAUSED = 0;
